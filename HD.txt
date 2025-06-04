@@ -1,0 +1,14 @@
+Vấn đề bạn gặp phải là do khi bạn gõ lại tên học sinh và nhấn "Thay đổi", dữ liệu sách đã mượn không được lưu vì trạng thái (studentBorrowedBooks) không được liên kết với tên học sinh một cách cố định. Hiện tại, mã chỉ mô phỏng việc tải sách đã mượn dựa trên một điều kiện tĩnh (if (studentName == "Nguyen Van A")). Để khắc phục, bạn cần:
+
+Sử dụng một bản đồ (Map) để lưu danh sách sách đã mượn cho từng học sinh.
+Cập nhật logic để giữ nguyên dữ liệu sách đã mượn khi thay đổi tên học sinh.
+Dưới đây là phiên bản sửa đổi của mã:
+
+MainActivity.kt
+kotlin
+Hiển thị nội tuyến
+Giải thích thay đổi:
+Sử dụng studentBorrowedBooksMap: Thay vì lưu danh sách sách trong một biến tĩnh, tôi đã dùng một MutableStateMap để lưu danh sách sách đã mượn cho từng học sinh dựa trên tên của họ.
+Khởi tạo hoặc tải danh sách sách: Khi thay đổi tên học sinh, mã sẽ kiểm tra trong studentBorrowedBooksMap để lấy danh sách sách đã mượn của học sinh đó (nếu đã tồn tại) hoặc khởi tạo một danh sách mới nếu chưa có.
+Lưu khi nhấn "Thêm": Khi bạn đánh dấu tích và nhấn "Thêm", danh sách sách được cập nhật trong studentBorrowedBooksMap theo tên học sinh hiện tại, đảm bảo dữ liệu được giữ nguyên khi bạn thay đổi tên học sinh khác.
+Bây giờ, khi bạn gõ lại tên học sinh và nhấn "Thay đổi", hệ thống sẽ giữ nguyên danh sách sách đã mượn của học sinh trước đó và chỉ hiển thị danh sách sách mới nếu học sinh đó chưa có dữ liệu. Hãy thử chạy mã và kiểm tra!
