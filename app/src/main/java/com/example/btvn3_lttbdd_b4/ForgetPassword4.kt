@@ -2,14 +2,11 @@ package com.example.btvn1_lttbdd_b4.Screens
 
 
 import android.graphics.Color.parseColor
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,9 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,7 +45,7 @@ import androidx.compose.ui.unit.sp
 import com.example.btvn3_lttbdd_b4.R
 
 @Composable
-fun Page4(currentPage: Int, totalPages: Int, email: String,password: String,OTPs: String, submit:()->Unit, BackPage3:()->Unit) {
+fun ForgotPassword4(currentPage: Int, totalPages: Int, email: String,password: String,OTPs: String, submit:()->Unit, BackPage3:()->Unit) {
 //Giải pháp đúng: Tạo một biến mutableStateOf() từ giá trị ban đầu
     var emailState by remember { mutableStateOf(email) }
     var passwordState by remember { mutableStateOf(password) }
@@ -62,7 +56,11 @@ fun Page4(currentPage: Int, totalPages: Int, email: String,password: String,OTPs
     var OTP by remember { mutableStateOf("") }
 
 
-
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
@@ -93,11 +91,7 @@ fun Page4(currentPage: Int, totalPages: Int, email: String,password: String,OTPs
     }
     // Phần nội dung căn giữa
 
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+
         Image(
             painter = painterResource(id = R.drawable.uth),
             contentDescription = "hinh anh",
@@ -224,7 +218,7 @@ fun Page4(currentPage: Int, totalPages: Int, email: String,password: String,OTPs
             )
 
         ) {
-            Text(text = "Next")
+            Text(text = "Submit")
         }
 
     }

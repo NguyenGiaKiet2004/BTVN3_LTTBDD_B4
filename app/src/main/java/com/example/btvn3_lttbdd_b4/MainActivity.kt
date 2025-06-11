@@ -1,5 +1,6 @@
 package com.example.btvn3_lttbdd_b4
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,20 +9,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.btvn1_lttbdd_b4.Screens.Page1
-import com.example.btvn1_lttbdd_b4.Screens.Page2
-import com.example.btvn1_lttbdd_b4.Screens.Page3
-import com.example.btvn1_lttbdd_b4.Screens.Page4
+import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword1
+import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword2
+import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword3
+import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword4
+import com.example.btvn1_lttbdd_b4.Screens.LoginScreen
 import com.example.btvn3_lttbdd_b4.ui.theme.BTVN3_LTTBDD_B4Theme
 
 class MainActivity : ComponentActivity() {
@@ -49,14 +48,42 @@ fun ManageScreen(){
     val navController = rememberNavController()
     var viewModel : MainViewModel = viewModel()
     BTVN3_LTTBDD_B4Theme{
-        NavHost(navController= navController, startDestination = "Page1"){
-            composable ("Page1") {
-                Page1(1,3,
+        NavHost(navController= navController, startDestination = "AuthScreen"){
+            composable("AuthScreen") {
+                AuthScreen(
+                    navController = navController
+                )
+            }
+
+            composable("LoginScreen") {
+                LoginScreen(
+                    openPage1 = { email->
+                        viewModel.email = email
+                        navController.navigate("User-Profile")
+                    }
+                    ,navController = navController
+                )
+            }
+
+            composable("RegisterScreen") {
+                RegisterScreen(navController)
+            }
+
+            // Định nghĩa trang UserProfile
+            composable("UserProfile/{email}") { backStackEntry ->
+                val email = backStackEntry.arguments?.getString("email") ?: ""
+                UserProfile(email = Uri.decode(email))
+            }
+
+
+            composable ("ForgotPassword1") {
+                ForgotPassword1(1,3,
                     openPage2 = {
                         email->
                         viewModel.email = email
-                        navController.navigate("Page2")
+                        navController.navigate("ForgotPassword2")
                     },
+                    navController = navController
                 )
             }
             /*composable ("Page1") {
@@ -68,14 +95,14 @@ fun ManageScreen(){
                     },
                 )
             }*/
-            composable("Page2") {
-                Page2(1,3,
+            composable("ForgotPassword2") {
+                ForgotPassword2(1,3,
                     openPage3 = { OTP->
                         viewModel.OTPs =OTP
-                        navController.navigate("Page3")
+                        navController.navigate("ForgotPassword3")
                     },
                     BackPage1 = {
-                        navController.navigate("Page1")
+                        navController.navigate("ForgotPassword1")
                     },
 
                 )
@@ -93,14 +120,14 @@ fun ManageScreen(){
 
                 )
             }*/
-            composable ("Page3") {
-                Page3(1,3,
+            composable ("ForgotPassword3") {
+                ForgotPassword3(1,3,
                     openPage4 = {password->
                         viewModel.password = password
-                        navController.navigate("Page4")
+                        navController.navigate("ForgotPassword4")
                     },
                     BackPage2 = {
-                        navController.navigate("Page2")
+                        navController.navigate("ForgotPassword2")
                     }
                 )
             }
@@ -116,17 +143,17 @@ fun ManageScreen(){
                 )
             }*/
 
-            composable("Page4") {
-                Page4(
+            composable("ForgotPassword4") {
+                ForgotPassword4(
                     1, 3,
                     email = viewModel.email,
                     password = viewModel.password,
                     OTPs = viewModel.OTPs,
                     submit = {
-                        navController.navigate("Page1")
+                        navController.navigate("ForgotPassword1")
                     },
                     BackPage3 = {
-                        navController.navigate("Page3")
+                        navController.navigate("ForgotPassword3")
                     }
                 )
             }

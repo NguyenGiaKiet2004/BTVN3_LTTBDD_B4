@@ -2,14 +2,9 @@ package com.example.btvn1_lttbdd_b4.Screens
 
 
 import android.graphics.Color.parseColor
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,17 +12,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,8 +27,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,48 +39,46 @@ import androidx.compose.ui.unit.sp
 import com.example.btvn3_lttbdd_b4.R
 
 @Composable
-fun Page3(currentPage: Int, totalPages: Int,openPage4:(String)->Unit,BackPage2:()->Unit) {
+fun ForgotPassword3(currentPage: Int, totalPages: Int,openPage4:(String)->Unit,BackPage2:()->Unit) {
 
     var password by remember { mutableStateOf("") }
     var password1 by remember { mutableStateOf("") }
 
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-
-    Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
-            // Nút back ở bên trái
             IconButton(
-                onClick = {BackPage2()},
-                modifier = Modifier
-                    .size(45.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(color = Color(parseColor("#2196F3")))
-                    .padding(0.dp),
-                colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = Color.White,
-                )
-            )
-            {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                onClick = {},
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.baseline_arrow_back_ios_24),
                     contentDescription = "Back",
-                    modifier = Modifier
-                        .size(40.dp)
+                    modifier = Modifier.size(24.dp),
+                    colorFilter = ColorFilter.tint(colorScheme.onSurface)
                 )
             }
+
+            Text(
+                text = "Thông tin tài khoảng",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorScheme.onSurface,
+                modifier = Modifier.align(Alignment.Center),
+                textAlign = TextAlign.Center
+            )
         }
         // Phần nội dung căn giữa
 
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+
             Image(
                 painter = painterResource(id = R.drawable.uth),
                 contentDescription = "hinh anh",
