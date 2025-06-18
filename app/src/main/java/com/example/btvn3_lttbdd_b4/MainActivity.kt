@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel// Import helper để lấy ViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.btvn1_lttbdd_b4.ui.Screens.ForgotPassword1
 import com.example.btvn1_lttbdd_b4.ui.Screens.ForgotPassword2
 import com.example.btvn1_lttbdd_b4.ui.Screens.ForgotPassword3
@@ -24,15 +28,16 @@ import com.example.btvn1_lttbdd_b4.ui.Screens.LoginScreen
 
 import com.example.btvn3_lttbdd_b4.ui.Screens.AddNewTask
 import com.example.btvn3_lttbdd_b4.ui.Screens.AuthScreen
-import com.example.btvn3_lttbdd_b4.ui.Screens.Detail
 import com.example.btvn3_lttbdd_b4.ui.Screens.Homework
 import com.example.btvn3_lttbdd_b4.ui.Screens.ListEmpty
 import com.example.btvn3_lttbdd_b4.ui.Screens.RegisterScreen
+import com.example.btvn3_lttbdd_b4.ui.Screens.TaskDetail
 import com.example.btvn3_lttbdd_b4.ui.Screens.TodoList
 import com.example.btvn3_lttbdd_b4.ui.Screens.UserProfile
 import com.example.btvn3_lttbdd_b4.ui.Screens.UserScreen
-import com.example.btvn3_lttbdd_b4.ui.screens.TodoList1
+import com.example.btvn3_lttbdd_b4.ui.Screens.TodoList1
 import com.example.btvn3_lttbdd_b4.ui.theme.BTVN3_LTTBDD_B4Theme
+import com.example.btvn3_lttbdd_b4.ui.viewmodel.TaskViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,17 +45,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BTVN3_LTTBDD_B4Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(
-                        modifier = Modifier
-                            .padding(innerPadding)  // 👈 Sử dụng innerPadding ở đây
-                            .fillMaxSize()
-                    ) {
-                        // Khởi tạo Repository và Factory
-
-                        ManageScreen()
-                    }
-                }
+                // Khởi tạo Repository và Factory
+                ManageScreen()
             }
         }
     }
@@ -60,10 +56,11 @@ class MainActivity : ComponentActivity() {
 fun ManageScreen(){
     val navController = rememberNavController()
     var viewModel : MainViewModel = viewModel()
-
+    val taskViewModel: TaskViewModel = viewModel()
 
 
     BTVN3_LTTBDD_B4Theme{
+
         NavHost(navController= navController, startDestination = "TodoList1"){
             composable("TaskScreen") {
                 UserScreen()
@@ -75,16 +72,28 @@ fun ManageScreen(){
                 Homework(
                 )
             }
-            composable("Detail") {
-                Detail(
-                )
+            composable(
+                "TaskDetail/{taskId}",
+                arguments = listOf(navArgument("taskId") {
+                    type = NavType.IntType // hoặc NavType.StringType tùy kiểu của task.id
+                })
+            ) {
+                backStackEntry ->
+                val taskId = backStackEntry.arguments?.getInt("taskId")
+                if (taskId != null) {
+                    TaskDetail(TaskId = taskId,navController=navController,viewModel = taskViewModel) // ok vì taskId đã là Int
+                } else {
+                    // Có thể chuyển sang màn hình lỗi, hoặc Toast, hoặc Log
+                    Text("Không tìm thấy ID của Task")
+                }
+
+            }
+
+            composable("TodoList1") {
+                TodoList1(viewModel = taskViewModel,navController = navController)
             }
             composable("ListEmpty") {
-                ListEmpty(
-                )
-            }
-            composable("TodoList1") {
-                TodoList1(navController=navController)
+                ListEmpty(viewModel = taskViewModel,navController= navController)
             }
             composable("TodoList") {
                 TodoList()

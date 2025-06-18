@@ -21,9 +21,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.btvn3_lttbdd_b4.data.model.Task
+import com.example.btvn3_lttbdd_b4.ui.viewmodel.TaskViewModel
 
 @Composable
-fun Detail() {
+fun TaskDetail(TaskId : Int,navController: NavController,viewModel: TaskViewModel) {
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -47,6 +52,9 @@ fun Detail() {
                 )
             )
             {
+                IconButton(onClick = {
+                    navController.navigate("ListEmpty")
+                }) { }
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
@@ -89,14 +97,23 @@ fun Detail() {
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        BodyDetail()
+        BodyDetail(TaskId = TaskId, viewModel = viewModel)
     }
 }
 @Composable
 
-fun BodyDetail() {
-    val ischecked =7
-    var checkState = remember { mutableStateListOf(*Array(ischecked) { false }) }
+fun BodyDetail(TaskId :Int ,viewModel: TaskViewModel ) {
+    val task = viewModel.getTaskById(TaskId)
+    if (task == null) {
+        Text("Task không tồn tại hoặc đã bị xóa", color = Color.Red)
+        return
+    }
+    val listSubTask = task.subtasks
+
+    // Khởi tạo index2 cho ngoai LazyColumn
+    var index2 = 0
+
+    var checkState = remember { mutableStateListOf(*Array(listSubTask.size) { false }) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -104,13 +121,13 @@ fun BodyDetail() {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ){
         Text(
-            text="Complete Android Project",
+            text= task.title ,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
 
         )
         Text(
-            text="Finish the UI, integrate API. and write documentation",
+            text= task.description,
             fontSize = 15.sp,
 
         )
@@ -126,27 +143,67 @@ fun BodyDetail() {
         ){
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                    .padding(horizontal = 5.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 // DANH SÁCH CỤM
-                repeat(3) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = "Date",
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Column {
-                            Text(text = "Category")
-                            Text(text = "Work", fontWeight = FontWeight.Bold)
-                        }
+
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = "Date",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Column {
+                        Text(text = "Category")
+                        Text(text = task.category, fontWeight = FontWeight.Bold)
                     }
                 }
+
+                // DANH SÁCH CỤM
+
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 5.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = "Date",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Column {
+                        Text(text = "Status")
+                        Text(text = task.status, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+                // DANH SÁCH CỤM
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = "Date",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Column {
+                        Text(text = "Priority")
+                        Text(text = task.priority, fontWeight = FontWeight.Bold)
+                    }
+                }
+
             }
         }
 
@@ -160,7 +217,9 @@ fun BodyDetail() {
                 .height(210.dp),
         ){
             LazyColumn{
-                items(ischecked){index->
+
+                items(listSubTask!!.size){index->
+                    index2 = index
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -181,7 +240,7 @@ fun BodyDetail() {
                                 disabledCheckedColor = Color.Gray
                             )
                         )
-                        Text(text = "This task es related to Fitness, It reeds to be completed $index")
+                        Text(text = listSubTask[index].title)
                     }
                 }
 
@@ -207,14 +266,10 @@ fun BodyDetail() {
                 contentDescription = "Date",
                 modifier = Modifier.size(30.dp)
             )
-            Text(text = "document_1_0.pdf")
+            Text(text = listSubTask[index2].title)
         }
 
     }
-
-
-
-
 }
 
 

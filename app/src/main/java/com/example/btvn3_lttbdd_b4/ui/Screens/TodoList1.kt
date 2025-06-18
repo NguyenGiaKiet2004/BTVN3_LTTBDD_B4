@@ -1,4 +1,4 @@
-package com.example.btvn3_lttbdd_b4.ui.screens
+package com.example.btvn3_lttbdd_b4.ui.Screens
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -11,9 +11,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,16 +21,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.btvn3_lttbdd_b4.R
 import com.example.btvn3_lttbdd_b4.data.model.Task
 import com.example.btvn3_lttbdd_b4.ui.viewmodel.TaskViewModel
 
 @Composable
-fun TodoList1(viewModel: TaskViewModel = viewModel(), navController: NavController) {
+fun TodoList1(viewModel: TaskViewModel , navController: NavController) {
     val tasks = viewModel.tasks.collectAsState()
     val error = viewModel.error.collectAsState()
+    LaunchedEffect(tasks.value) {
+        viewModel.initializeSelectedTasks(tasks.value)
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -67,7 +68,9 @@ fun TodoList1(viewModel: TaskViewModel = viewModel(), navController: NavControll
                 Spacer(modifier = Modifier.weight(1f))
                 NavigationBarItem(
                     selected = false,
-                    onClick = { /* TODO: Calendar */ },
+                    onClick = {
+                        navController.navigate("ListEmpty")
+                    },
                     icon = { Icon(Icons.Default.DateRange, contentDescription = "Calendar") },
                     label = { Text("Calendar") }
                 )
@@ -90,7 +93,7 @@ fun TodoList1(viewModel: TaskViewModel = viewModel(), navController: NavControll
                     bottom = paddingValues.calculateBottomPadding()
                 )
         ) {
-            TopCard()
+            TopCard1()
             Spacer(modifier = Modifier.height(10.dp))
             error.value?.let {
                 Text(
@@ -99,13 +102,13 @@ fun TodoList1(viewModel: TaskViewModel = viewModel(), navController: NavControll
                     modifier = Modifier.padding(16.dp)
                 )
             }
-            BodyTodoList(tasks = tasks.value, viewModel = viewModel, navController = navController)
+            BodyTodoList1(tasks = tasks.value, viewModel = viewModel, navController = navController)
         }
     }
 }
 
 @Composable
-fun TopCard() {
+fun TopCard1() {
     val context = LocalContext.current
     val isResourceAvailable = try {
         context.resources.getIdentifier("uth", "drawable", context.packageName) != 0
@@ -165,7 +168,7 @@ fun TopCard() {
 }
 
 @Composable
-fun BodyTodoList(tasks: List<Task>, viewModel: TaskViewModel, navController: NavController) {
+fun BodyTodoList1(tasks: List<Task>, viewModel: TaskViewModel, navController: NavController) {
     Log.d("BodyTodoList", "Tasks size: ${tasks.size}")
     if (tasks.isEmpty()) {
         Column(
@@ -184,7 +187,9 @@ fun BodyTodoList(tasks: List<Task>, viewModel: TaskViewModel, navController: Nav
         return
     }
 
-    val checkedState = remember { mutableStateListOf(*Array(tasks.size) { tasks.getOrNull(it)?.status == "Completed" }) }
+
+//    val checkedState = remember { mutableStateListOf(*Array(tasks.size) { tasks.getOrNull(it)?.status == "Completed" }) }
+    val selectedTaskIds = viewModel.selectedTaskIds
     val boxColors = listOf(Color(0xFFFFCDD2), Color(0xFFBBDEFB), Color(0xFFC8E6C9))
 
     LazyColumn {
@@ -202,9 +207,14 @@ fun BodyTodoList(tasks: List<Task>, viewModel: TaskViewModel, navController: Nav
                     modifier = Modifier.padding(16.dp).fillMaxWidth()
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
+                        val isChecked = selectedTaskIds.contains(task.id)
                         Checkbox(
-                            checked = checkedState[index],
-                            onCheckedChange = { checkedState[index] = it },
+//                            checked = checkedState[index],
+//                            onCheckedChange = { checkedState[index] = it },
+                            checked = isChecked,
+                            onCheckedChange = { isNowChecked ->
+                                viewModel.toggleTaskSelection(task.id, isNowChecked)
+                            },
                             colors = CheckboxDefaults.colors(
                                 checkedColor = Color.Black,
                                 uncheckedColor = Color.Black,

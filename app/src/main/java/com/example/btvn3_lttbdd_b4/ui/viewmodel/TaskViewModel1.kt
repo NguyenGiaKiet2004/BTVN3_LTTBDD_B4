@@ -1,6 +1,7 @@
 package com.example.btvn3_lttbdd_b4.ui.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.btvn3_lttbdd_b4.data.model.Task
@@ -37,4 +38,26 @@ class TaskViewModel : ViewModel() {
             }
         }
     }
+
+
+    private val _selectedTaskIds = mutableStateListOf<Int>()
+    val selectedTaskIds: List<Int> get() = _selectedTaskIds
+
+    fun toggleTaskSelection(taskId: Int, selected: Boolean) {
+        if (selected) {
+            if (!_selectedTaskIds.contains(taskId)) _selectedTaskIds.add(taskId)
+        } else {
+            _selectedTaskIds.remove(taskId)
+        }
+    }
+
+    fun initializeSelectedTasks(tasks: List<Task>) {
+        _selectedTaskIds.clear()
+        _selectedTaskIds.addAll(tasks.filter { it.status == "Completed" }.map { it.id })
+    }
+
+    fun getTaskById(taskId: Int): Task? {
+        return _tasks.value.find { it.id == taskId }
+    }
+
 }
