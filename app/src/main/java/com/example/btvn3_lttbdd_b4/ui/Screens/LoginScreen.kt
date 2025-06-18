@@ -1,4 +1,4 @@
-package com.example.btvn1_lttbdd_b4.Screens
+package com.example.btvn1_lttbdd_b4.ui.Screens
 
 import android.graphics.Color.parseColor
 import android.net.Uri

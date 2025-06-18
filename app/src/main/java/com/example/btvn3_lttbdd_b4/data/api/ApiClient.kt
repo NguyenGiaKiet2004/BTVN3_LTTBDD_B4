@@ -11,4 +11,12 @@ object RetrofitInstance {
             .build()
             .create(ApiService::class.java)
     }
+
+    val taskApi: TaskService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://amock.io/api/researchUTH/") // bạn đổi URL ở đây
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(TaskService::class.java)
+    }
 }

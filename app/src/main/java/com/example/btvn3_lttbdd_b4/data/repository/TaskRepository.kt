@@ -6,4 +6,6 @@ import com.example.btvn3_lttbdd_b4.data.api.RetrofitInstance
 
 class UserRepository {
     suspend fun getUsers() = RetrofitInstance.api.getUsers()
+
 }
+

@@ -1,7 +1,5 @@
 package com.example.btvn3_lttbdd_b4
 
-
-
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,11 +16,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel// Import helper để lấ
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword1
-import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword2
-import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword3
-import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword4
-import com.example.btvn1_lttbdd_b4.Screens.LoginScreen
+import com.example.btvn1_lttbdd_b4.ui.Screens.ForgotPassword1
+import com.example.btvn1_lttbdd_b4.ui.Screens.ForgotPassword2
+import com.example.btvn1_lttbdd_b4.ui.Screens.ForgotPassword3
+import com.example.btvn1_lttbdd_b4.ui.Screens.ForgotPassword4
+import com.example.btvn1_lttbdd_b4.ui.Screens.LoginScreen
 
 import com.example.btvn3_lttbdd_b4.ui.Screens.AddNewTask
 import com.example.btvn3_lttbdd_b4.ui.Screens.AuthScreen
@@ -30,8 +28,10 @@ import com.example.btvn3_lttbdd_b4.ui.Screens.Detail
 import com.example.btvn3_lttbdd_b4.ui.Screens.Homework
 import com.example.btvn3_lttbdd_b4.ui.Screens.ListEmpty
 import com.example.btvn3_lttbdd_b4.ui.Screens.RegisterScreen
+import com.example.btvn3_lttbdd_b4.ui.Screens.TodoList
 import com.example.btvn3_lttbdd_b4.ui.Screens.UserProfile
 import com.example.btvn3_lttbdd_b4.ui.Screens.UserScreen
+import com.example.btvn3_lttbdd_b4.ui.screens.TodoList1
 import com.example.btvn3_lttbdd_b4.ui.theme.BTVN3_LTTBDD_B4Theme
 
 class MainActivity : ComponentActivity() {
@@ -64,7 +64,7 @@ fun ManageScreen(){
 
 
     BTVN3_LTTBDD_B4Theme{
-        NavHost(navController= navController, startDestination = "TodoList"){
+        NavHost(navController= navController, startDestination = "TodoList1"){
             composable("TaskScreen") {
                 UserScreen()
             }
@@ -83,7 +83,9 @@ fun ManageScreen(){
                 ListEmpty(
                 )
             }
-
+            composable("TodoList1") {
+                TodoList1(navController=navController)
+            }
             composable("TodoList") {
                 TodoList()
             }
