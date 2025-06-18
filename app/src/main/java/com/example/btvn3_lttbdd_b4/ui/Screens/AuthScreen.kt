@@ -1,4 +1,4 @@
-package com.example.btvn3_lttbdd_b4
+package com.example.btvn3_lttbdd_b4.ui.Screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

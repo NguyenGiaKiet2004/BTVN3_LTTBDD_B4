@@ -1,5 +1,7 @@
 package com.example.btvn3_lttbdd_b4
 
+
+
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,7 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel// Import helper để lấy ViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,6 +23,15 @@ import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword2
 import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword3
 import com.example.btvn1_lttbdd_b4.Screens.ForgotPassword4
 import com.example.btvn1_lttbdd_b4.Screens.LoginScreen
+
+import com.example.btvn3_lttbdd_b4.ui.Screens.AddNewTask
+import com.example.btvn3_lttbdd_b4.ui.Screens.AuthScreen
+import com.example.btvn3_lttbdd_b4.ui.Screens.Detail
+import com.example.btvn3_lttbdd_b4.ui.Screens.Homework
+import com.example.btvn3_lttbdd_b4.ui.Screens.ListEmpty
+import com.example.btvn3_lttbdd_b4.ui.Screens.RegisterScreen
+import com.example.btvn3_lttbdd_b4.ui.Screens.UserProfile
+import com.example.btvn3_lttbdd_b4.ui.Screens.UserScreen
 import com.example.btvn3_lttbdd_b4.ui.theme.BTVN3_LTTBDD_B4Theme
 
 class MainActivity : ComponentActivity() {
@@ -35,6 +46,8 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)  // 👈 Sử dụng innerPadding ở đây
                             .fillMaxSize()
                     ) {
+                        // Khởi tạo Repository và Factory
+
                         ManageScreen()
                     }
                 }
@@ -47,8 +60,34 @@ class MainActivity : ComponentActivity() {
 fun ManageScreen(){
     val navController = rememberNavController()
     var viewModel : MainViewModel = viewModel()
+
+
+
     BTVN3_LTTBDD_B4Theme{
-        NavHost(navController= navController, startDestination = "AuthScreen"){
+        NavHost(navController= navController, startDestination = "TodoList"){
+            composable("TaskScreen") {
+                UserScreen()
+            }
+            composable("AddNewTask") {
+                AddNewTask()
+            }
+            composable("Homework") {
+                Homework(
+                )
+            }
+            composable("Detail") {
+                Detail(
+                )
+            }
+            composable("ListEmpty") {
+                ListEmpty(
+                )
+            }
+
+            composable("TodoList") {
+                TodoList()
+            }
+
             composable("AuthScreen") {
                 AuthScreen(
                     navController = navController
